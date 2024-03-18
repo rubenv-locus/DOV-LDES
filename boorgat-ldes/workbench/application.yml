@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+orchestrator:
+  pipelines:
+
+    - name: boorgat
+      description: "Test voor Boorgat"
+      input:
+        name: Ldio:HttpIn
+        adapter:
+          name: Ldio:RdfAdapter
+      transformers:
+        - name: Ldio:VersionObjectCreator
+          config:
+            member-type: "http://def.isotc211.org/iso19156/2011/DomainSpecificSamplingFeatures#Borehole"
+            delimiter: "/"
+            date-observed-property: <http://www.w3.org/ns/prov#generatedAtTime>
+            generatedAt-property: http://www.w3.org/ns/prov#generatedAtTime
+            versionOf-property: http://purl.org/dc/terms/isVersionOf
+      outputs:
+        - name: Ldio:HttpOut
+          config:
+            endpoint: http://ldes-server/ldes/boorgat
+            rdf-writer:
+              content-type: application/n-quads
